@@ -8,8 +8,16 @@ public class LibraryApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(LibraryApplication.class, args);
+
+//		ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class); // bean storage
+//
+//		Book book = context.getBean(Book.class);
+//
+//		book.setTitle("Java");
+//		book.setAuthor("Games Gosling");
+//
+//		System.out.println(book.getTitle());
+//		System.out.println(book.getAuthor());
 	}
-
-
 
 }
