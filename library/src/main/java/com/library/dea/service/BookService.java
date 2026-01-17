@@ -33,6 +33,20 @@ public class BookService {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no such a Book with the following ID! " + id));
     }
+    // show book by author
+    public List<Book> getAllByAuthor(@PathVariable String author) {
+        return bookRepository.findByAuthor(author);
+    }
+
+    // show book by price
+    public List<Book> getAllByPrice(@PathVariable Double price) {
+        return bookRepository.findByMinPrice(price);
+    }
+
+    // show book by title
+    public List<Book> getAllByTitle(@PathVariable String title) {
+        return bookRepository.findByTitle(title);
+    }
 
     public Book update(@PathVariable Integer id, @RequestBody Book updatedBook) {
         return bookRepository.findById(id).map(existing -> {

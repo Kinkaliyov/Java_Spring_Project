@@ -22,6 +22,23 @@ public class BookController {
         return bookService.showAll();
     }
 
+    @GetMapping("/find/title/{title}")
+    public List<Book> getAllBooksByTitle(@PathVariable String title) {
+        return bookService.getAllByTitle(title);
+    }
+
+    @GetMapping("/find/author/{author}")
+    public List<Book> getAllBooksByAuthor(@PathVariable String author) {
+        return bookService.getAllByAuthor(author);
+    }
+
+    @GetMapping("/find/minPrice/{minPrice}")
+    public List<Book> getAllBooksByMinPrice(@PathVariable Double minPrice) {
+        return bookService.getAllByPrice(minPrice);
+    }
+
+
+
     @GetMapping("/{id}")
     public Book getBook(@PathVariable Integer id) {
         return bookService.showById(id);
