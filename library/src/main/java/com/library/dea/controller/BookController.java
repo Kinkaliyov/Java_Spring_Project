@@ -37,6 +37,10 @@ public class BookController {
         return bookService.getAllByPrice(minPrice);
     }
 
+    @GetMapping("/find/amount/{amount}")
+    public List<Book> getAllBooksByAmount(@PathVariable Integer amount) {
+        return bookService.getAllByAmount(amount);
+    }
 
 
     @GetMapping("/{id}")

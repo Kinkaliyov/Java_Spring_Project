@@ -48,6 +48,12 @@ public class BookService {
         return bookRepository.findByTitle(title);
     }
 
+    // show book by amount
+    public List<Book> getAllByAmount(@PathVariable Integer amount) {
+        return bookRepository.findByAmount(amount);
+    }
+
+    // update book (PUT)
     public Book update(@PathVariable Integer id, @RequestBody Book updatedBook) {
         return bookRepository.findById(id).map(existing -> {
             existing.setTitle(updatedBook.getTitle());
