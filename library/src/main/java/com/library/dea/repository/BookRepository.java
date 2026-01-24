@@ -21,7 +21,6 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             nativeQuery = true
     )
     List<Book> findByAuthor(String author);
-    // ... dz (sami pishem BEZ ctrl+c,v)
 
     //findByMinPrice
     @Query(
