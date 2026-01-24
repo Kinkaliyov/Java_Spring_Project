@@ -2,12 +2,13 @@ package com.library.dea.service;
 
 import com.library.dea.entity.Book;
 import com.library.dea.repository.BookRepository;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BookService {
@@ -28,40 +29,47 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    //pagination
+    public Page<Book> getBooks(Pageable pageable) {
+        return bookRepository.findAll(pageable);
+    }
+
+    // show book by title
+    public List<Book> getAllByTitle(@PathVariable String title){
+        return bookRepository.findByTitle(title);
+    }
+
+    // show books by author
+    public List<Book> getAllByAuthor(@PathVariable String author){
+        return bookRepository.findByAuthor(author);
+    }
+
+    // get all by min price
+    public List<Book> getAllByMinPrice(@PathVariable Double price) {
+        return bookRepository.findByMinPrice(price);
+    }
+
+    // show books by min amount
+    public List<Book> getAllByMinAmount(@PathVariable Integer minAmount) {
+        return bookRepository.findByMinAmount(minAmount);
+    }
+
     // show book by id (GET)
     public Book showById(@PathVariable Integer id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no such a Book with the following ID! " + id));
     }
-    // show book by author
-    public List<Book> getAllByAuthor(@PathVariable String author) {
-        return bookRepository.findByAuthor(author);
-    }
 
-    // show book by price
-    public List<Book> getAllByPrice(@PathVariable Double price) {
-        return bookRepository.findByMinPrice(price);
-    }
-
-    // show book by title
-    public List<Book> getAllByTitle(@PathVariable String title) {
-        return bookRepository.findByTitle(title);
-    }
-
-    // show book by amount
-    public List<Book> getAllByAmount(@PathVariable Integer amount) {
-        return bookRepository.findByAmount(amount);
-    }
-
-    // update book (PUT)
     public Book update(@PathVariable Integer id, @RequestBody Book updatedBook) {
-        return bookRepository.findById(id).map(existing -> {
-            existing.setTitle(updatedBook.getTitle());
-            existing.setAuthor(updatedBook.getAuthor());
-            existing.setPrice(updatedBook.getPrice());
-            existing.setAmount(updatedBook.getAmount());
-            return bookRepository.save(existing);
-        }).orElseThrow(() -> new RuntimeException("There is no such a book with following id: " + id));
+        return bookRepository.findById(id)
+                .map(existing -> {
+                    existing.setTitle(updatedBook.getTitle());
+                    existing.setAuthor(updatedBook.getAuthor());
+                    existing.setPrice(updatedBook.getPrice());
+                    existing.setAmount(updatedBook.getAmount());
+                    return bookRepository.save(existing);
+                })
+                .orElseThrow(() -> new RuntimeException("No such a book with the following id: " + id));
     }
 
     // delete book (DELETE)

@@ -21,21 +21,18 @@ public interface BookRepository extends JpaRepository<Book, Integer> {
             nativeQuery = true
     )
     List<Book> findByAuthor(String author);
-    // findByMinPrice
+
+    //findByMinPrice
     @Query(
             value = "SELECT * FROM books WHERE price >= :minPrice",
             nativeQuery = true
     )
     List<Book> findByMinPrice(Double minPrice);
-    // findByAmount
+
+    //findByAmount
     @Query(
-            value = "SELECT * FROM books WHERE amount >= :amount",
+            value = "SELECT * FROM books WHERE amount >= :minAmount",
             nativeQuery = true
     )
-    List<Book> findByAmount(Integer amount);
-
-
-
-
-
+    List<Book> findByMinAmount(Integer minAmount);
 }

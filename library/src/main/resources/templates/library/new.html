@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Добавь книгу</title>
+</head>
+<body>
+
+<h2>Добавить книжечке</h2>
+<form th:action="@{/books}"
+      th:object="${book}"
+      method="post">
+
+    <input type="hidden" th:field="*{id}"/>
+
+    <div>
+        <label>Тайтл:</label>
+        <input type="text" th:field="*{title}" required/>
+    </div>
+    <div>
+        <label>Автор:</label>
+        <input type="text" th:field="*{author}" required/>
+    </div>
+    <div>
+        <label>Цена:</label>
+        <input type="text" th:field="*{price}" required/>
+    </div>
+    <div>
+        <label>Количество:</label>
+        <input type="text" th:field="*{amount}" required/>
+    </div>
+
+    <button type="submit">Save</button>
+</form>
+
+<a th:href="@{/books}">Back</a>
+<style>
+    body {
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Segoe UI', sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+}
+
+h2 {
+    color: #00d4ff;
+    margin-bottom: 25px;
+}
+
+form {
+    background-color: #252525;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+    width: 350px;
+}
+
+form div {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    margin-bottom: 8px;
+    color: #00d4ff;
+    font-size: 14px;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #3d3d3d;
+    background-color: #1a1a1a;
+    color: white;
+    box-sizing: border-box;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: #00d4ff;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    background-color: #00d4ff;
+    border: none;
+    border-radius: 5px;
+    color: #1a1a1a;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background-color: #008fb3;
+}
+
+a {
+    margin-top: 20px;
+    color: #999;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+a:hover {
+    color: #00d4ff;
+}
+</style>
+</body>
+</html>
