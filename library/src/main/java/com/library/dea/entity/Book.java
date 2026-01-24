@@ -11,15 +11,15 @@ public class Book {
     private Integer id;
     private String title;
     private String author;
-    private  Double price;
+    private Double price;
     private Integer amount;
 
-    Book() {
+
+    public Book() {
 
     }
 
-
-    Book(String title, String author, Double price, Integer amount) {
+    public Book(String title, String author, Double price, Integer amount) {
         this.title = title;
         this.author = author;
         this.price = price;
