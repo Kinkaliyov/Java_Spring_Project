@@ -2,8 +2,10 @@ package com.library.dea.controller;
 
 import com.library.dea.entity.Book;
 import com.library.dea.service.BookService;
+import jakarta.validation.Valid;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -32,7 +34,10 @@ public class BookPageController {
 
     // save
     @PostMapping
-    public String save(@ModelAttribute Book book) {
+    public String save(@Valid @ModelAttribute Book book, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()){
+            return "library/new";
+        }
         bookService.add(book);
         return "redirect:/books";
     }
