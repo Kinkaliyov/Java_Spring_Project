@@ -3,7 +3,9 @@ package com.library.dea.service;
 import com.library.dea.entity.Book;
 import com.library.dea.repository.BookRepository;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -75,6 +77,18 @@ public class BookService {
     // delete book (DELETE)
     public void deleteBook(@PathVariable Integer id) {
         bookRepository.deleteById(id);
+    }
+
+    // pagination
+    public Page<Book> findPaginated(int page, int size) {
+        Pageable pageable  = PageRequest.of(page, size, Sort.by("id").ascending());
+        return bookRepository.findAll(pageable);
+    }
+
+    // search
+    public Page<Book> search(String keyword, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
+        return bookRepository.findByTitleContainingIgnoreCase(keyword, pageable);
     }
 
 }

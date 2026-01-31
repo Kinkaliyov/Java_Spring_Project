@@ -12,6 +12,12 @@
 
 <br>
 
+<form th:action="@{/books/search}" method="get" style="margin-bottom: 20px">
+    <input class="form-control" type="text" name="keyword" placeholder="Поиск по названию" th:value="${keyword}">
+    <button type="submit">Поиск</button>
+    <a th:href="@{books}" style="margin-left: 10px;">Назад/Сброс</a>
+</form>
+
 <table border="1">
     <tr>
         <th>Титул</th>
@@ -31,6 +37,18 @@
         </td>
     </tr>
 </table>
+<div style="margin-top: 20px;">
+    <a th:if="${currentPage > 0}" th:href="@{/books(page=${currentPage - 1}, size=${size})}">-</a>
+
+    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+        <a th:href="${keyword != null} ? @{/books/search(keyword=${keyword}, page=${i}, size=${size})} : @{/books(page=${i}, size=${size})}"
+           th:text="${i + 1}"
+           th:style="${i == currentPage} ? 'background-color: #00d4ff; color: #1a1a1a; font-weight: bold; border: 1px solid #00d4ff;' : ''">
+        </a>
+    </span>
+
+    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/books(page=${currentPage + 1}, size=${size})}">+</a>
+</div>
 <style>
     body {
     background-color: #1a1a1a;
@@ -95,6 +113,8 @@ tr:hover {
 tr:last-child td {
     border-bottom: none;
 }
+
+
 </style>
 </body>
 </html>
