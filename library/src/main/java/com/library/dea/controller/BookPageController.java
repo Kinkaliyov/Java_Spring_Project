@@ -36,7 +36,7 @@ public class BookPageController {
     @PostMapping
     public String save(@Valid @ModelAttribute Book book, BindingResult bindingResult) {
         if (bindingResult.hasErrors()){
-            return "library/new";
+            return book.getId() == null ? "library/new" : "library/edit";
         }
         bookService.add(book);
         return "redirect:/books";
