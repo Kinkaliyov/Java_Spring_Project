@@ -23,7 +23,7 @@ public class BookPageController {
     @GetMapping // mvc
     public String showBooks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,Model model) {
         Page<Book> bookPage = bookService.findPaginated(page, size);
-        model.addAttribute("books", bookService.showAll());
+        model.addAttribute("books", bookPage.getContent());
         model.addAttribute("currentPage", page);
         model.addAttribute("totalPages", bookPage.getTotalPages());
         model.addAttribute("totalItems", bookPage.getTotalElements());
@@ -69,7 +69,7 @@ public class BookPageController {
 
         model.addAttribute("books", bookPage.getContent());
         model.addAttribute("currentPage", page);
-        model.addAttribute("totalPages", bookPage.getTotalPages()); 
+        model.addAttribute("totalPages", bookPage.getTotalPages());
         model.addAttribute("keyword", keyword);
         model.addAttribute("size", size);
 

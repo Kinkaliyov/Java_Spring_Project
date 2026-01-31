@@ -15,7 +15,7 @@
 <form th:action="@{/books/search}" method="get" style="margin-bottom: 20px">
     <input class="form-control" type="text" name="keyword" placeholder="Поиск по названию" th:value="${keyword}">
     <button type="submit">Поиск</button>
-    <a th:href="@{books}" style="margin-left: 10px;">Назад/Сброс</a>
+    <a th:href="@{/books}" style="margin-left: 10px;">Назад/Сброс</a>
 </form>
 
 <table border="1">
