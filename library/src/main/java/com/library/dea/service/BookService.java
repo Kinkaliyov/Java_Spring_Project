@@ -37,32 +37,32 @@ public class BookService {
     }
 
     // show book by title
-    public List<Book> getAllByTitle(@PathVariable String title){
+    public List<Book> getAllByTitle(String title){
         return bookRepository.findByTitle(title);
     }
 
     // show books by author
-    public List<Book> getAllByAuthor(@PathVariable String author){
+    public List<Book> getAllByAuthor(String author){
         return bookRepository.findByAuthor(author);
     }
 
     // get all by min price
-    public List<Book> getAllByMinPrice(@PathVariable Double price) {
+    public List<Book> getAllByMinPrice(Double price) {
         return bookRepository.findByMinPrice(price);
     }
 
     // show books by min amount
-    public List<Book> getAllByMinAmount(@PathVariable Integer minAmount) {
+    public List<Book> getAllByMinAmount(Integer minAmount) {
         return bookRepository.findByMinAmount(minAmount);
     }
 
     // show book by id (GET)
-    public Book showById(@PathVariable Integer id) {
+    public Book showById(Integer id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no such a Book with the following ID! " + id));
     }
 
-    public Book update(@PathVariable Integer id, @RequestBody Book updatedBook) {
+    public Book update(Integer id, Book updatedBook) {
         return bookRepository.findById(id)
                 .map(existing -> {
                     existing.setTitle(updatedBook.getTitle());
@@ -75,7 +75,7 @@ public class BookService {
     }
 
     // delete book (DELETE)
-    public void deleteBook(@PathVariable Integer id) {
+    public void deleteBook(Integer id) {
         bookRepository.deleteById(id);
     }
 

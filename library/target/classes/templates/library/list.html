@@ -13,7 +13,7 @@
 <br>
 
 <form th:action="@{/books/search}" method="get" style="margin-bottom: 20px">
-    <input class="form-control" type="text" name="keyword" placeholder="Поиск по названию" th:value="${keyword}">
+    <input type="text" name="keyword" placeholder="Поиск по названию" th:value="${keyword}">
     <button type="submit">Поиск</button>
     <a th:href="@{/books}" style="margin-left: 10px;">Назад/Сброс</a>
 </form>
@@ -33,7 +33,7 @@
         <td th:text="${book.amount}"></td>
         <td>
             <a style="width: 30px; height: 30px;" th:href="@{/books/edit/{id}(id=${book.id})}">EDIT</a>
-            <a style="width: 30px; height: 30px;" th:href="@{/books/delete/{id}(id=${book.id})}" onclick="return confirm('Are you sure?')">X</a>
+            <a class="btn-delete" style="width: 30px; height: 30px;" th:href="@{/books/delete/{id}(id=${book.id})}" onclick="return confirm('Are you sure?')">X</a>
         </td>
     </tr>
 </table>
@@ -113,7 +113,54 @@ tr:hover {
 tr:last-child td {
     border-bottom: none;
 }
+input[type="text"],
+input[type="number"],
+.form-control {
+    background-color: #1a1a1a;
+    border: 2px solid #00ccff;
+    border-radius: 5px;
+    color: #ffffff;
+    padding: 8px 15px;
+    outline: none;
+    transition: all 0.3s ease;
+}
 
+input[type="text"]:focus,
+input[type="number"]:focus {
+    box-shadow: 0 0 10px #00ccff;
+    border-color: #00eeff;
+}
+
+button,
+.btn-custom {
+    background-color: transparent;
+    border: 2px solid #00ccff;
+    border-radius: 5px;
+    color: #00ccff;
+    padding: 8px 20px;
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button:hover,
+.btn-custom:hover {
+    background-color: #00ccff;
+    color: #000000;
+    box-shadow: 0 0 15px #00ccff;
+}
+
+.btn-delete {
+    border-color: #ff4444;
+    color: #ff4444;
+}
+
+.btn-delete:hover {
+    background-color: #ff4444;
+    color: #ffffff;
+    box-shadow: 0 0 15px #ff4444;
+}
 
 </style>
 </body>
