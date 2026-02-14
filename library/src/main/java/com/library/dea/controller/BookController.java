@@ -1,5 +1,6 @@
 package com.library.dea.controller;
 
+import com.library.dea.dto.BookDTO;
 import com.library.dea.entity.Book;
 import com.library.dea.service.BookService;
 import org.springframework.data.domain.Page;
@@ -64,7 +65,7 @@ public class BookController {
     }
 
     @PutMapping("/update/{id}")
-    public Book updateBook(@PathVariable Integer id, @RequestBody Book book){
+    public Book updateBook(@PathVariable Integer id, @RequestBody BookDTO book){
         return bookService.update(id, book);
     }
 

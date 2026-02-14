@@ -64,16 +64,14 @@ public class BookService {
                 .orElseThrow(() -> new RuntimeException("There is no such a Book with the following ID! " + id));
     }
 
-    public Book update(Integer id, Book updatedBook) {
-        return bookRepository.findById(id)
-                .map(existing -> {
+    public Book update(Integer id, BookDTO updatedBook) {
+        Book existing = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found with such an id! " + id));
                     existing.setTitle(updatedBook.getTitle());
                     existing.setAuthor(updatedBook.getAuthor());
                     existing.setPrice(updatedBook.getPrice());
                     existing.setAmount(updatedBook.getAmount());
                     return bookRepository.save(existing);
-                })
-                .orElseThrow(() -> new RuntimeException("No such a book with the following id: " + id));
+
     }
 
     // delete book (DELETE)
