@@ -11,13 +11,9 @@ public class Book {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
-    @NotBlank(message = "Title is required")
     private String title;
-    @NotBlank(message = "Author is required")
     private String author;
-    @NotNull(message = "Price is required")
     private Double price;
-    @NotNull(message = "Amount is required")
     private Integer amount;
 
 

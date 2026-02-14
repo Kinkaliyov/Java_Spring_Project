@@ -15,20 +15,28 @@
 
         <div>
             <label>Тайтл:</label>
-            <input type="text" th:field="*{title}" required/>
+            <input type="text" th:field="*{title}" />
+            <br>
+            <span class="error" th:if="${#fields.hasErrors('title')} ? 'error-field'" th:errors="*{title}"></span>
         </div>
         <div>
             <label>Автор:</label>
-            <input type="text" th:field="*{author}" required/>
+            <input type="text" th:field="*{author}"/>
+            <br>
+            <span class="error" th:if="${#fields.hasErrors('author')} ? 'error-field'" th:errors="*{author}"></span>
         </div>
         <div>
             <label>Цена:</label>
-            <input type="text" th:field="*{price}" required/>
+            <input type="text" th:field="*{price}"/>
+            <br>
+            <span class="error" th:if="${#fields.hasErrors('price')} ? 'error-field'" th:errors="*{price}"></span>
         </div>
         <div>
             <label>Количество:</label>
-            <input type="text" th:field="*{amount}" required/>
-            </div>
+            <input type="text" th:field="*{amount}"/>
+            <br>
+            <span class="error" th:if="${#fields.hasErrors('amount')} ? 'error-field'" th:errors="*{amount}"></span>
+        </div>
 
         <button type="submit">Save</button>
         <a th:href="@{/books}">Back</a>
