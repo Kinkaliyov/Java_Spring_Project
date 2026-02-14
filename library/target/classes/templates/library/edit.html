@@ -15,27 +15,27 @@
 
         <div>
             <label>Тайтл:</label>
-            <input type="text" th:field="*{title}" />
+            <input type="text" th:field="*{title}" th:classappend="${#fields.hasErrors('title')} ? 'error-field'"/>
             <br>
-            <span class="error" th:if="${#fields.hasErrors('title')} ? 'error-field'" th:errors="*{title}"></span>
+            <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
         </div>
         <div>
             <label>Автор:</label>
-            <input type="text" th:field="*{author}"/>
+            <input type="text" th:field="*{author}" th:classappend="${#fields.hasErrors('author')} ? 'error-field'"/>
             <br>
-            <span class="error" th:if="${#fields.hasErrors('author')} ? 'error-field'" th:errors="*{author}"></span>
+            <span class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
         </div>
         <div>
             <label>Цена:</label>
-            <input type="text" th:field="*{price}"/>
+            <input type="number" th:field="*{price}" th:classappend="${#fields.hasErrors('price')} ? 'error-field' : ''"/>
             <br>
-            <span class="error" th:if="${#fields.hasErrors('price')} ? 'error-field'" th:errors="*{price}"></span>
+            <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
         </div>
         <div>
             <label>Количество:</label>
-            <input type="text" th:field="*{amount}"/>
+            <input type="number" th:field="*{amount}" th:classappend="${#fields.hasErrors('amount')} ? 'error-field' : ''"/>
             <br>
-            <span class="error" th:if="${#fields.hasErrors('amount')} ? 'error-field'" th:errors="*{amount}"></span>
+            <span class="error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
         </div>
 
         <button type="submit">Save</button>
