@@ -9,6 +9,6 @@ public class GlobalExceptionHandler {
     @ExceptionHandler
     public String handleRuntime(RuntimeException ex, Model model) {
         model.addAttribute("message", ex.getMessage());
-        return "error";
+        return "error/error";
     }
 }

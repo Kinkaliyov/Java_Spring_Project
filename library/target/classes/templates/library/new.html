@@ -2,134 +2,168 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Добавь книгу</title>
+    <title>Добавить новую книгу</title>
+    <style>
+        /* --- КИБЕРПАНК АНИМАЦИИ --- */
+        @keyframes pageReveal {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        /* --- БАЗА --- */
+        body {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            color: #e0e0e0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center; /* Центрируем форму по вертикали */
+            margin: 0;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden; /* Скролл запрещен, как ты и просил */
+            animation: pageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        h2 {
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            margin-bottom: 30px;
+        }
+
+        /* --- ФОРМА (Glassmorphism) --- */
+        .glass-form {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+            width: 100%;
+            max-width: 450px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        label {
+            color: #00d4ff;
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        input {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid #333;
+            border-radius: 6px;
+            color: #fff;
+            padding: 12px 16px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+        }
+
+        /* Ошибки */
+        .error-field {
+            border-color: #ff4444 !important;
+        }
+
+        .error-message {
+            color: #ff4444;
+            font-size: 11px;
+            font-weight: bold;
+        }
+
+        /* Кнопки */
+        .btn-submit {
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            padding: 14px;
+            border-radius: 6px;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 2px;
+            margin-top: 10px;
+            transition: 0.3s;
+        }
+
+        .btn-submit:hover {
+            background: #00d4ff;
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+        }
+
+        .back-link {
+            text-align: center;
+            color: #666;
+            text-decoration: none;
+            font-size: 13px;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: #00d4ff;
+        }
+    </style>
 </head>
 <body>
 
-<h2>Добавить книжечке</h2>
-<form th:action="@{/books}"
-      th:object="${book}"
-      method="post">
+<h2>Новая Книга</h2>
 
-    <input type="hidden" th:field="*{id}"/>
+<form th:action="@{/books}" th:object="${book}" method="post" class="glass-form">
 
-    <div>
-        <label>Тайтл:</label>
-        <input type="text" th:field="*{title}" th:classappend="${#fields.hasErrors('title')} ? 'error-field'"/>
-        <br>
-        <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
-    </div>
-    <div>
-        <label>Автор:</label>
-        <input type="text" th:field="*{author}" th:classappend="${#fields.hasErrors('author')} ? 'error-field'"/>
-        <br>
-        <span class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
-    </div>
-    <div>
-        <label>Цена:</label>
-        <input type="number" th:field="*{price}" th:classappend="${#fields.hasErrors('price')} ? 'error-field' : ''"/>
-        <br>
-        <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
-    </div>
-    <div>
-        <label>Количество:</label>
-        <input type="number" th:field="*{amount}" th:classappend="${#fields.hasErrors('amount')} ? 'error-field' : ''"/>
-        <br>
-        <span class="error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+    <div class="input-group">
+        <label>Название</label>
+        <input type="text" th:field="*{title}" placeholder="Введите название..."
+               th:classappend="${#fields.hasErrors('title')} ? 'error-field'"/>
+        <span class="error-message" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
     </div>
 
-    <button type="submit">Save</button>
+    <div class="input-group">
+        <label>Автор</label>
+        <input type="text" th:field="*{author}" placeholder="Имя автора..."
+               th:classappend="${#fields.hasErrors('author')} ? 'error-field'"/>
+        <span class="error-message" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
+    </div>
+
+    <div style="display: flex; gap: 15px;">
+        <div class="input-group" style="flex: 1;">
+            <label>Цена</label>
+            <input type="number" step="0.01" th:field="*{price}"
+                   th:classappend="${#fields.hasErrors('price')} ? 'error-field'"/>
+            <span class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        </div>
+
+        <div class="input-group" style="flex: 1;">
+            <label>Кол-во</label>
+            <input type="number" th:field="*{amount}"
+                   th:classappend="${#fields.hasErrors('amount')} ? 'error-field'"/>
+            <span class="error-message" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+        </div>
+    </div>
+
+    <button type="submit" class="btn-submit">Зарегистрировать</button>
+
+    <a th:href="@{/books}" class="back-link">← Вернуться к списку</a>
 </form>
 
-<a th:href="@{/books}">Back</a>
-<style>
-    body {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px;
-}
-
-h2 {
-    color: #00d4ff;
-    margin-bottom: 25px;
-}
-
-form {
-    background-color: #252525;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-    width: 350px;
-}
-
-form div {
-    margin-bottom: 20px;
-}
-
-label {
-    display: block;
-    margin-bottom: 8px;
-    color: #00d4ff;
-    font-size: 14px;
-}
-
-input[type="text"] {
-    width: 100%;
-    padding: 10px;
-    border-radius: 5px;
-    border: 1px solid #3d3d3d;
-    background-color: #1a1a1a;
-    color: white;
-    box-sizing: border-box;
-}
-
-input[type="text"]:focus {
-    outline: none;
-    border-color: #00d4ff;
-}
-
-button {
-    width: 100%;
-    padding: 12px;
-    background-color: #00d4ff;
-    border: none;
-    border-radius: 5px;
-    color: #1a1a1a;
-    font-weight: bold;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-button:hover {
-    background-color: #008fb3;
-}
-
-a {
-    margin-top: 20px;
-    color: #999;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-a:hover {
-    color: #00d4ff;
-}
-    .error {
-        color: red;
-        font-size: 12px;
-        margin-top: 5px;
-        margin-bottom: 10px;
-        display: block;
-        text-align: left;
-        font-weight: bold;
-        text-transform: uppercase;
-        width: 100%;
-
-    }
-</style>
 </body>
 </html>

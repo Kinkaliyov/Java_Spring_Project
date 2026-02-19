@@ -3,165 +3,262 @@
 <head>
     <meta charset="UTF-8">
     <title>Книги</title>
+    <style>
+        /* --- АНИМАЦИИ --- */
+        @keyframes pageReveal {
+            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        @keyframes neonGlow {
+            0% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.2); }
+            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.6); }
+            100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.2); }
+        }
+
+        /* --- БАЗА --- */
+        body {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            color: #e0e0e0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Центрирует всё по горизонтали */
+            padding: 40px 20px;
+            margin: 0;
+            min-height: 100vh;
+            animation: pageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            /* ВОТ ЭТА ШТУКА ЗАПРЕЩАЕТ СКРОЛЛ */
+            overflow: hidden;
+
+            /* Фиксируем высоту, чтобы страница не растягивалась */
+             height: 100vh;
+             width: 100vw;
+             margin: 0;
+        }
+
+        body::-webkit-scrollbar { display: none; }
+
+        * { transition: all 0.25s ease-in-out; box-sizing: border-box; }
+
+        h1, h2 {
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        /* --- ФОРМА ПОИСКА --- */
+        .search-container {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 30px;
+            width: 100%;
+            max-width: 1000px;
+        }
+
+        /* --- ТАБЛИЦА --- */
+        table {
+            width: 100%;
+            max-width: 1000px;
+            border-collapse: separate;
+            border-spacing: 0 8px;
+            margin: 0 auto;
+        }
+
+        th {
+            color: #00d4ff;
+            text-align: left;
+            padding: 15px 20px;
+            text-transform: uppercase;
+            font-size: 12px;
+            font-weight: 800;
+        }
+
+        tr {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(5px);
+        }
+
+        td { padding: 15px 20px; border-top: 1px solid rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+        td:first-child { border-left: 1px solid rgba(255, 255, 255, 0.05); border-radius: 8px 0 0 8px; }
+        td:last-child { border-right: 1px solid rgba(255, 255, 255, 0.05); border-radius: 0 8px 8px 0; }
+
+        tr:hover {
+            background: rgba(0, 212, 255, 0.08);
+            transform: scale(1.01);
+        }
+
+        /* --- КНОПКИ И ИНПУТЫ --- */
+        button {
+            background: transparent;
+            border: 1px solid #00d4ff;
+            color: #00d4ff;
+            padding: 10px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+            cursor: pointer;
+            text-decoration: none;
+            letter-spacing: 1px;
+        }
+
+        button:hover {
+            background: #00d4ff;
+            color: #000;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.5);
+        }
+
+        input[type="text"], input[type="number"] {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid #333;
+            border-radius: 4px;
+            color: #fff;
+            padding: 10px 16px;
+            outline: none;
+            min-width: 250px;
+        }
+
+        /* --- ПАГИНАЦИЯ (Центрированная) --- */
+        .pagination {
+            margin-top: 40px;
+            display: flex;
+            justify-content: center; /* Вот тут магия центровки */
+            align-items: center;
+            gap: 10px;
+            width: 100%;
+        }
+
+        .pagination a {
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            color: #888;
+            text-decoration: none;
+            border-radius: 6px;
+            min-width: 45px;
+            text-align: center;
+        }
+
+        .pagination a:hover, .active-page {
+            border-color: #00d4ff !important;
+            color: #00d4ff !important;
+            background: rgba(0, 212, 255, 0.1) !important;
+            animation: neonGlow 2s infinite;
+        }
+
+        /* Кнопки EDIT/X */
+        .actions-cell { display: flex; gap: 8px; }
+        .actions-cell a {
+            text-decoration: none;
+            font-size: 11px;
+            padding: 6px 12px;
+            border-radius: 3px;
+            border: 1px solid rgba(0, 212, 255, 0.3);
+            color: #00d4ff;
+        }
+        .btn-delete { border-color: #ff4444 !important; color: #ff4444 !important; }
+        .btn-delete:hover { background: #ff4444; color: #fff !important; }
+
+        .add-btn {
+    /* Позиционирование */
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 30px;
+    margin-left: 250px;
+
+    /* Размеры и отступы */
+    padding: 12px 28px;
+    min-width: 200px;
+
+    /* Стиль */
+    background: transparent;
+    border: 2px solid #00d4ff;
+    border-radius: 6px;
+
+    /* Текст */
+    color: #00d4ff;
+    font-weight: 800;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: 2px;
+    font-size: 14px;
+
+    /* Эффекты */
+    cursor: pointer;
+    box-shadow: 0 0 10px rgba(0, 212, 255, 0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.add-btn:hover {
+    background: #00d4ff;
+    color: #000000;
+    box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+    transform: translateY(-3px); /* Слегка подпрыгивает при наведении */
+}
+
+.add-btn:active {
+    transform: translateY(0); /* Возвращается при клике */
+}
+    </style>
 </head>
 <body>
 
-<h2>Список книг</h2>
+<div class="container">
+    <h2>Список книг</h2>
 
-<a th:href="@{/books/new}">+Добавить книжку</a>
+    <a th:href="@{/books/new}" class="add-btn">+ Добавить книжку</a>
+    <div class="search-container">
+    <form th:action="@{/books}" method="get">
+        <input type="text" name="keyword" placeholder="Поиск по названию..." th:value="${keyword}">
+        <button type="submit">Поиск</button>
+        <a th:href="@{/books}" th:if="${keyword != null}" class="reset-link" style="margin-left: 10px; border: none; font-size: 14px; color: #666;">Сбросить</a>
+    </form>
+    </div>
+    <table>
+        <thead>
+        <tr>
+            <th>Титул</th>
+            <th>Автор</th>
+            <th>Цена</th>
+            <th>Кол-во</th>
+            <th>Действия</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td th:text="${book.author}"></td>
+            <td th:text="${book.price}"></td>
+            <td th:text="${book.amount}"></td>
+            <td class="actions-cell">
+                <a th:href="@{/books/edit/{id}(id=${book.id})}">EDIT</a>
+                <a class="btn-delete" th:href="@{/books/delete/{id}(id=${book.id})}"
+                   onclick="return confirm('Удалить эту книгу?')">X</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
 
-<br>
+    <div class="pagination">
+        <a th:if="${currentPage > 0}"
+           th:href="@{/books(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">«</a>
 
-<form th:action="@{/books/search}" method="get" style="margin-bottom: 20px">
-    <input type="text" name="keyword" placeholder="Поиск по названию" th:value="${keyword}">
-    <button type="submit">Поиск</button>
-    <a th:href="@{/books}" style="margin-left: 10px;">Назад/Сброс</a>
-</form>
+        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/books(page=${i}, size=${size}, keyword=${keyword})}"
+               th:text="${i + 1}"
+               th:class="${i == currentPage} ? 'active-page' : ''">
+            </a>
+        </span>
 
-<table border="1">
-    <tr>
-        <th>Титул</th>
-        <th>Автор</th>
-        <th>Цена</th>
-        <th>Количество</th>
-        <th>Действия</th>
-    </tr>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.title}"></td>
-        <td th:text="${book.author}"></td>
-        <td th:text="${book.price}"></td>
-        <td th:text="${book.amount}"></td>
-        <td>
-            <a style="width: 30px; height: 30px;" th:href="@{/books/edit/{id}(id=${book.id})}">EDIT</a>
-            <a class="btn-delete" style="width: 30px; height: 30px;" th:href="@{/books/delete/{id}(id=${book.id})}" onclick="return confirm('Are you sure?')">X</a>
-        </td>
-    </tr>
-</table>
-<div style="margin-top: 20px;">
-    <a th:if="${currentPage > 0}" th:href="@{/books(page=${currentPage - 1}, size=${size})}">-</a>
-
-    <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-        <a th:href="${keyword != null} ? @{/books/search(keyword=${keyword}, page=${i}, size=${size})} : @{/books(page=${i}, size=${size})}"
-           th:text="${i + 1}"
-           th:style="${i == currentPage} ? 'background-color: #00d4ff; color: #1a1a1a; font-weight: bold; border: 1px solid #00d4ff;' : ''">
-        </a>
-    </span>
-
-    <a th:if="${currentPage + 1 < totalPages}" th:href="@{/books(page=${currentPage + 1}, size=${size})}">+</a>
+        <a th:if="${currentPage + 1 < totalPages}"
+           th:href="@{/books(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">»</a>
+    </div>
 </div>
-<style>
-    body {
-    background-color: #1a1a1a;
-    color: #ffffff;
-    font-family: 'Segoe UI', sans-serif;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px;
-}
 
-h2 {
-    color: #00d4ff;
-    margin-bottom: 20px;
-}
-
-a {
-    color: #00d4ff;
-    text-decoration: none;
-    font-weight: bold;
-    border: 1px solid #00d4ff;
-    padding: 8px 16px;
-    border-radius: 5px;
-    transition: 0.3s;
-    margin-bottom: 20px;
-    display: inline-block;
-}
-
-a:hover {
-    background-color: #00d4ff;
-    color: #1a1a1a;
-}
-
-table {
-    width: 80%;
-    max-width: 800px;
-    border-collapse: collapse;
-    background-color: #252525;
-    border-radius: 8px;
-    overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.5);
-}
-
-th {
-    background-color: #333333;
-    color: #00d4ff;
-    text-align: left;
-    padding: 15px;
-    text-transform: uppercase;
-    font-size: 14px;
-}
-
-td {
-    padding: 12px 15px;
-    border-bottom: 1px solid #3d3d3d;
-}
-
-tr:hover {
-    background-color: #2e2e2e;
-}
-
-tr:last-child td {
-    border-bottom: none;
-}
-input[type="text"],
-input[type="number"],
-.form-control {
-    background-color: #1a1a1a;
-    border: 2px solid #00ccff;
-    border-radius: 5px;
-    color: #ffffff;
-    padding: 8px 15px;
-    outline: none;
-    transition: all 0.3s ease;
-}
-
-input[type="text"]:focus,
-input[type="number"]:focus {
-    box-shadow: 0 0 10px #00ccff;
-    border-color: #00eeff;
-}
-
-button,
-.btn-custom {
-    background-color: transparent;
-    border: 2px solid #00ccff;
-    border-radius: 5px;
-    color: #00ccff;
-    padding: 8px 20px;
-    font-weight: bold;
-    text-transform: uppercase;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-
-button:hover,
-.btn-custom:hover {
-    background-color: #00ccff;
-    color: #000000;
-    box-shadow: 0 0 15px #00ccff;
-}
-
-.btn-delete {
-    border-color: #ff4444;
-    color: #ff4444;
-}
-
-.btn-delete:hover {
-    background-color: #ff4444;
-    color: #ffffff;
-    box-shadow: 0 0 15px #ff4444;
-}
-
-</style>
 </body>
 </html>
