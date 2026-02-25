@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Регистрация профиля</title>
+    <style>
+        /* --- КИБЕРПАНК АНИМАЦИИ --- */
+        @keyframes pageReveal {
+            from { opacity: 0; transform: scale(0.9) translateY(30px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* --- БАЗА --- */
+        body {
+            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            color: #e0e0e0;
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden; /* Листать запрещено */
+            animation: pageReveal 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        /* --- КОНТЕЙНЕР (Glassmorphism) --- */
+        .register-container {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            padding: 45px;
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7);
+            width: 100%;
+            max-width: 400px;
+            text-align: center;
+        }
+
+        h2 {
+            color: #00d4ff;
+            text-transform: uppercase;
+            letter-spacing: 5px;
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+            margin-bottom: 35px;
+        }
+
+        /* --- ПОЛЯ ВВОДА --- */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            color: #00d4ff;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: #fff;
+            padding: 14px;
+            outline: none;
+            font-size: 15px;
+            transition: all 0.3s ease;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #00d4ff;
+            background: rgba(0, 212, 255, 0.05);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
+        }
+
+        /* --- ОШИБКИ ВАЛИДАЦИИ --- */
+        .error-msg {
+            color: #ff4444;
+            font-size: 11px;
+            margin-top: 6px;
+            font-weight: bold;
+            text-transform: lowercase;
+            font-style: italic;
+        }
+
+        .error-field {
+            border-color: #ff4444 !important;
+        }
+
+        /* --- КНОПКА --- */
+        button {
+            width: 100%;
+            background: transparent;
+            border: 2px solid #00d4ff;
+            color: #00d4ff;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 900;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 2px;
+            transition: 0.3s;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            background: #00d4ff;
+            color: #000;
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+        }
+
+        /* --- ССЫЛКА НАЗАД --- */
+        .back-link {
+            margin-top: 25px;
+            display: block;
+            color: #666;
+            text-decoration: none;
+            font-size: 12px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .back-link:hover {
+            color: #00d4ff;
+        }
+    </style>
+</head>
+<body>
+
+<div class="register-container">
+    <form th:action="@{/register}" th:object="${form}" method="post">
+        <h2>New Identity</h2>
+
+        <div class="input-group">
+            <label>User Name</label>
+            <input type="text" th:field="*{username}" placeholder="ENT_ID"
+                   th:classappend="${#fields.hasErrors('username')} ? 'error-field'">
+            <div class="error-msg" th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></div>
+        </div>
+
+        <div class="input-group">
+            <label>Password</label>
+            <input type="password" th:field="*{password}" placeholder="SEC_KEY"
+                   th:classappend="${#fields.hasErrors('password')} ? 'error-field'">
+            <div class="error-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
+
+        <button type="submit">Create Profile</button>
+
+        <a class="back-link" th:href="@{/login}">← Back to Auth</a>
+    </form>
+</div>
+
+</body>
+</html>

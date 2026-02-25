@@ -2,161 +2,199 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Редактировать книгу</title>
+    <title>Edit Protocol</title>
     <style>
-        /* --- КИБЕРПАНК АНИМАЦИИ --- */
-        @keyframes pageReveal {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
-        }
-
-        /* --- БАЗА --- */
+        /* --- БАЗА И ЖИВОЙ ФОН --- */
         body {
-            background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
+            background: #050505;
             color: #e0e0e0;
-            font-family: 'Inter', 'Segoe UI', sans-serif;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            font-family: 'Inter', sans-serif;
             margin: 0;
-            height: 100vh;
-            width: 100vw;
-            overflow: hidden; /* Запрет скролла */
-            animation: pageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
         }
 
-        h1 {
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 500px;
+            height: 500px;
+            border-radius: 50%;
+            background: rgba(0, 212, 255, 0.08);
+            filter: blur(100px);
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        body::after {
+            background: rgba(255, 0, 212, 0.04);
+            right: -10%;
+            bottom: -10%;
+            animation-duration: 25s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            100% { transform: translate(20%, 20%) scale(1.1); }
+        }
+
+        /* --- TYPEWRITER --- */
+        .typewriter h1 {
             color: #00d4ff;
+            font-family: monospace;
+            overflow: hidden;
+            border-right: .15em solid #00d4ff;
+            white-space: nowrap;
+            margin: 0 auto 30px auto;
+            letter-spacing: .15em;
+            animation: typing 2s steps(20, end), blink-caret .5s step-end infinite;
+            width: fit-content;
+            font-size: 24px;
             text-transform: uppercase;
-            letter-spacing: 4px;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-            margin-bottom: 25px;
         }
 
-        /* --- ФОРМА (Glassmorphism) --- */
-        .glass-form {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(10px);
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #00d4ff } }
+
+        /* --- DYNAMIC GLASS PANEL --- */
+        .glass-panel {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(25px) saturate(180%);
+            -webkit-backdrop-filter: blur(25px) saturate(180%);
             border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
             width: 100%;
-            max-width: 450px;
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
+            max-width: 500px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+            text-align: center;
         }
 
+        /* --- INPUT GROUPS --- */
         .input-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
+            margin-bottom: 20px;
+            text-align: left;
         }
 
         label {
+            display: block;
+            font-size: 10px;
             color: #00d4ff;
-            font-size: 11px;
             text-transform: uppercase;
-            font-weight: bold;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            font-weight: 800;
+            opacity: 0.7;
         }
 
         input {
-            background: rgba(0, 0, 0, 0.4);
-            border: 1px solid #333;
-            border-radius: 6px;
+            width: 100%;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 12px 16px;
             color: #fff;
-            padding: 10px 14px;
+            font-size: 14px;
             outline: none;
-            transition: all 0.3s ease;
+            transition: 0.3s;
+            box-sizing: border-box;
         }
 
         input:focus {
             border-color: #00d4ff;
             background: rgba(0, 212, 255, 0.05);
-            box-shadow: 0 0 12px rgba(0, 212, 255, 0.3);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
         }
 
-        /* Ошибки */
         .error-field { border-color: #ff4444 !important; }
-        .error { color: #ff4444; font-size: 11px; font-weight: bold; }
+        .error-message { color: #ff4444; font-size: 10px; margin-top: 5px; text-transform: uppercase; }
 
-        /* Кнопки */
-        button {
-            background: transparent;
-            border: 2px solid #00d4ff;
-            color: #00d4ff;
-            padding: 12px;
-            border-radius: 6px;
-            font-weight: 800;
-            text-transform: uppercase;
-            cursor: pointer;
-            letter-spacing: 2px;
-            margin-top: 10px;
-            transition: 0.3s;
-        }
-
-        button:hover {
+        /* --- BUTTONS --- */
+        .btn-update {
+            width: 100%;
             background: #00d4ff;
+            border: none;
+            padding: 15px;
+            border-radius: 8px;
             color: #000;
-            box-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
-        }
-
-        a {
-            text-align: center;
-            color: #666;
-            text-decoration: none;
-            font-size: 12px;
-            transition: 0.3s;
+            font-weight: 900;
             text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 15px;
         }
 
-        a:hover { color: #00d4ff; }
+        .btn-update:hover {
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            transform: translateY(-2px);
+            background: #05f2ff;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            color: #444;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .back-link:hover { color: #00d4ff; }
     </style>
 </head>
 <body>
 
-<h1>Редактирование</h1>
-
-<form th:action="@{/books}" th:object="${book}" method="post" class="glass-form">
-
-    <input type="hidden" th:field="*{id}"/>
-
-    <div class="input-group">
-        <label>Тайтл</label>
-        <input type="text" th:field="*{title}"
-               th:classappend="${#fields.hasErrors('title')} ? 'error-field'"/>
-        <span class="error" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
+<div class="glass-panel">
+    <div class="typewriter">
+        <h1 th:text="'> EDIT_RECORD_ID_' + ${book.id}"></h1>
     </div>
 
-    <div class="input-group">
-        <label>Автор</label>
-        <input type="text" th:field="*{author}"
-               th:classappend="${#fields.hasErrors('author')} ? 'error-field'"/>
-        <span class="error" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
-    </div>
+    <form th:action="@{/books}" th:object="${book}" method="post">
+        <input type="hidden" th:field="*{id}"/>
 
-    <div style="display: flex; gap: 15px;">
-        <div class="input-group" style="flex: 1;">
-            <label>Цена</label>
-            <input type="number" step="0.01" th:field="*{price}"
-                   th:classappend="${#fields.hasErrors('price')} ? 'error-field'"/>
-            <span class="error" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+        <div class="input-group">
+            <label>Protocol Title</label>
+            <input type="text" th:field="*{title}" placeholder="System name..."
+                   th:classappend="${#fields.hasErrors('title')} ? 'error-field'"/>
+            <span class="error-message" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
         </div>
 
-        <div class="input-group" style="flex: 1;">
-            <label>Кол-во</label>
-            <input type="number" th:field="*{amount}"
-                   th:classappend="${#fields.hasErrors('amount')} ? 'error-field'"/>
-            <span class="error" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+        <div class="input-group">
+            <label>Source Author</label>
+            <input type="text" th:field="*{author}" placeholder="Unit identifier..."
+                   th:classappend="${#fields.hasErrors('author')} ? 'error-field'"/>
+            <span class="error-message" th:if="${#fields.hasErrors('author')}" th:errors="*{author}"></span>
         </div>
-    </div>
 
-    <button type="submit">Сохранить изменения</button>
-    <a th:href="@{/books}">Назад в систему</a>
-</form>
+        <div style="display: flex; gap: 15px;">
+            <div class="input-group" style="flex: 1;">
+                <label>Value (Credits)</label>
+                <input type="number" step="0.01" th:field="*{price}"
+                       th:classappend="${#fields.hasErrors('price')} ? 'error-field'"/>
+            </div>
+
+            <div class="input-group" style="flex: 1;">
+                <label>Stock Quantity</label>
+                <input type="number" th:field="*{amount}"
+                       th:classappend="${#fields.hasErrors('amount')} ? 'error-field'"/>
+            </div>
+        </div>
+
+        <div style="text-align: left; margin-top: -10px; margin-bottom: 10px;">
+            <span class="error-message" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></span>
+            <span class="error-message" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
+        </div>
+
+        <button type="submit" class="btn-update">Commit Changes_</button>
+        <a th:href="@{/books}" class="back-link">[ CANCEL_AND_EXIT ]</a>
+    </form>
+</div>
 
 </body>
 </html>

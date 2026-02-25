@@ -97,4 +97,17 @@ public class BookService {
 
     }
 
+    public Double getTotalValueByAuthor(String author) {
+        List<Book> books = bookRepository.findByAuthor(author);
+        double totalValue = 0;
+
+        for (Book book : books) {
+            // Добавляем проверку на всякий случай, чтобы не поймать ошибку на пустых полях
+            if (book.getPrice() != null && book.getAmount() != null) {
+                totalValue += book.getPrice() * book.getAmount();
+            }
+        }
+
+        return totalValue; // Просто отдаем число!
+    }
 }

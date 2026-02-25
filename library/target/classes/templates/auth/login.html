@@ -2,21 +2,15 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Вход в систему</title>
+    <title>Вход в терминал</title>
     <style>
-        /* --- АНИМАЦИИ --- */
+        /* --- КИБЕРПАНК АНИМАЦИИ --- */
         @keyframes pageReveal {
-            from { opacity: 0; transform: translateY(20px) scale(0.98); }
+            from { opacity: 0; transform: translateY(30px) scale(0.95); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
 
-        @keyframes neonPulse {
-            0% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.2); }
-            50% { box-shadow: 0 0 20px rgba(0, 212, 255, 0.5); }
-            100% { box-shadow: 0 0 5px rgba(0, 212, 255, 0.2); }
-        }
-
-        /* --- БАЗА --- */
+        /* --- ОБЩИЕ СТИЛИ --- */
         body {
             background: radial-gradient(circle at center, #1a1a1a 0%, #000000 100%);
             color: #e0e0e0;
@@ -26,56 +20,56 @@
             align-items: center;
             height: 100vh;
             margin: 0;
-            overflow: hidden; /* Скрываем скролл */
+            overflow: hidden; /* Листать нельзя, всё четко по центру */
             animation: pageReveal 0.8s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
-        /* --- КАРТОЧКА ЛОГИНА (Glassmorphism) --- */
-        .login-card {
-            background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(15px);
+        /* --- КАРТОЧКА (Glassmorphism) --- */
+        .login-container {
+            background: rgba(255, 255, 255, 0.02);
+            backdrop-filter: blur(20px);
             border: 1px solid rgba(0, 212, 255, 0.2);
             padding: 40px;
-            border-radius: 15px;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6);
+            border-radius: 20px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
             width: 100%;
-            max-width: 380px;
+            max-width: 400px;
             text-align: center;
         }
 
         h2 {
             color: #00d4ff;
             text-transform: uppercase;
-            letter-spacing: 5px;
-            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
-            margin-bottom: 30px;
-            font-size: 24px;
+            letter-spacing: 6px;
+            text-shadow: 0 0 20px rgba(0, 212, 255, 0.6);
+            margin-bottom: 35px;
+            font-size: 26px;
         }
 
-        /* --- ИНПУТЫ --- */
+        /* --- ГРУППЫ ВВОДА --- */
         .input-group {
             margin-bottom: 20px;
-            text-align: left;
         }
 
         input {
             width: 100%;
-            background: rgba(0, 0, 0, 0.5);
+            background: rgba(0, 0, 0, 0.6);
             border: 1px solid #333;
-            border-radius: 6px;
+            border-radius: 8px;
             color: #fff;
-            padding: 14px;
+            padding: 15px;
             outline: none;
             font-size: 15px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             box-sizing: border-box;
+            letter-spacing: 1px;
         }
 
         input:focus {
             border-color: #00d4ff;
             background: rgba(0, 212, 255, 0.05);
-            box-shadow: 0 0 15px rgba(0, 212, 255, 0.3);
-            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.4);
+            transform: scale(1.02);
         }
 
         /* --- КНОПКА --- */
@@ -84,65 +78,90 @@
             background: transparent;
             border: 2px solid #00d4ff;
             color: #00d4ff;
-            padding: 14px;
-            border-radius: 6px;
-            font-weight: 800;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 900;
             text-transform: uppercase;
             cursor: pointer;
-            letter-spacing: 2px;
-            transition: 0.3s;
+            letter-spacing: 3px;
+            transition: 0.4s;
             margin-top: 10px;
         }
 
         button:hover {
             background: #00d4ff;
             color: #000;
-            box-shadow: 0 0 30px rgba(0, 212, 255, 0.6);
+            box-shadow: 0 0 35px rgba(0, 212, 255, 0.8);
         }
 
-        /* --- СООБЩЕНИЯ ОБ ОШИБКАХ --- */
-        .msg {
+        /* --- ССЫЛКА РЕГИСТРАЦИИ --- */
+        .register-link {
+            margin-top: 25px;
             font-size: 13px;
+        }
+
+        .register-link a {
+            color: #666;
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: 0.3s;
+        }
+
+        .register-link a:hover {
+            color: #00d4ff;
+            text-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+        }
+
+        /* --- СООБЩЕНИЯ --- */
+        .status-msg {
             margin-top: 20px;
-            padding: 10px;
-            border-radius: 4px;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
         }
 
         .error {
             color: #ff4444;
             background: rgba(255, 68, 68, 0.1);
-            border: 1px solid rgba(255, 68, 68, 0.2);
+            border: 1px solid rgba(255, 68, 68, 0.3);
         }
 
-        .success {
+        .logout {
             color: #00ff88;
             background: rgba(0, 255, 136, 0.1);
-            border: 1px solid rgba(0, 255, 136, 0.2);
+            border: 1px solid rgba(0, 255, 136, 0.3);
         }
     </style>
 </head>
 <body>
 
-<div class="login-card">
+<div class="login-container">
     <form th:action="@{/login}" method="post">
-        <h2>Система</h2>
+        <h2>Terminal</h2>
 
         <div class="input-group">
-            <input type="text" name="username" placeholder="USERNAME" required/>
+            <input type="text" name="username" placeholder="IDENTIFIER" required/>
         </div>
 
         <div class="input-group">
-            <input type="password" name="password" placeholder="PASSWORD" required/>
+            <input type="password" name="password" placeholder="ACCESS_CODE" required/>
         </div>
 
-        <button type="submit">Авторизация</button>
+        <button type="submit">Execute Login</button>
 
-        <div th:if="${param.error}" class="msg error">
-            ДОСТУП ЗАПРЕЩЕН: Ошибка данных
+        <div class="register-link">
+            <a th:href="@{/register}">New User? Create Account</a>
         </div>
 
-        <div th:if="${param.logout}" class="msg success">
-            СЕССИЯ ЗАВЕРШЕНА
+        <div th:if="${param.error}" class="status-msg error">
+            Access Denied: Invalid Credentials
+        </div>
+
+        <div th:if="${param.logout}" class="status-msg logout">
+            Connection Terminated Successfully
         </div>
     </form>
 </div>
