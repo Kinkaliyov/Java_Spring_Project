@@ -102,7 +102,6 @@ public class BookService {
         double totalValue = 0;
 
         for (Book book : books) {
-            // Добавляем проверку на всякий случай, чтобы не поймать ошибку на пустых полях
             if (book.getPrice() != null && book.getAmount() != null) {
                 totalValue += book.getPrice() * book.getAmount();
             }

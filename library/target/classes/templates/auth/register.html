@@ -152,6 +152,13 @@
             <div class="error-msg" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
 
+        <div class="input-group">
+            <label>Password Confirm</label>
+            <input type="password" th:field="*{confrimPassword}" placeholder="SEC_KEY_PASS_CONFIRM"
+                   th:classappend="${#fields.hasErrors('password')} ? 'error-field'">
+            <div class="error-msg" th:if="${#fields.hasErrors('confrimPassword')}" th:errors="*{confrimPassword}"></div>
+        </div>
+
         <button type="submit">Create Profile</button>
 
         <a class="back-link" th:href="@{/login}">← Back to Auth</a>
