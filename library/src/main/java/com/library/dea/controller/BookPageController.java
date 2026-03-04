@@ -6,6 +6,7 @@ import com.library.dea.mapper.BookMapper;
 import com.library.dea.service.BookService;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -26,7 +27,9 @@ public class BookPageController {
     // table
     @GetMapping // mvc
     public String showBooks(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size,
-                            @RequestParam(required = false) String keyword,Model model) {
+                            @RequestParam(required = false) String keyword, Model model, Authentication authentication) {
+        Boolean isAdmin = authentication.getAuthorities().stream().anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+
         Page<Book> bookPage;
 
         if (keyword != null) {
@@ -46,6 +49,7 @@ public class BookPageController {
         model.addAttribute("totalPages", bookPage.getTotalPages());
         model.addAttribute("totalItems", bookPage.getTotalElements());
         model.addAttribute("size", size);
+        model.addAttribute("isAdmin", isAdmin);
 
         return "library/list";
     }

@@ -181,6 +181,35 @@
         }
 
         .btn-delete { color: #ff4444 !important; margin-left: 10px; }
+
+        .btn-logout {
+            background: transparent;
+            border: 1px solid #ff4444;
+            color: #ff4444;
+            padding: 10px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 12px;
+            transition: 0.3s;
+            margin-left: 10px;
+        }
+
+        .btn-logout:hover {
+            background: #ff4444;
+            color: #fff;
+            box-shadow: 0 0 20px rgba(255, 68, 68, 0.4);
+        }
+
+        /* Добавим обертку для кнопок в ряд */
+        .top-controls {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            gap: 15px;
+        }
     </style>
 </head>
 <body>
@@ -190,14 +219,20 @@
         <h2>> ACCESSING_LIBRARY_DATABASE...</h2>
     </div>
 
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
-        <a th:href="@{/books/new}" class="add-btn">+ ADD_NEW_RECORD</a>
+    <div class="top-controls">
+        <div>
+            <a th:href="@{/books/new}" th:if="${isAdmin}" class="add-btn">+ ADD_NEW_RECORD</a>
+        </div>
 
-        <form th:action="@{/books}" method="get" style="display: flex; gap: 10px;">
-            <input type="text" name="keyword" placeholder="Search title..." th:value="${keyword}">
-            <button type="submit">SEARCH</button>
-            <a th:href="@{/books}" th:if="${keyword != null}" style="color: #555; text-decoration: none; align-self: center;">[RESET]</a>
-        </form>
+        <div style="display: flex; gap: 10px; align-items: center;">
+            <form th:action="@{/books}" method="get" style="display: flex; gap: 10px;">
+                <input type="text" name="keyword" placeholder="Search title..." th:value="${keyword}">
+                <button type="submit">SEARCH</button>
+                <a th:href="@{/books}" th:if="${keyword != null}" style="color: #555; text-decoration: none; align-self: center; margin: 0 10px;">[RESET]</a>
+            </form>
+
+            <a href="http://localhost:1504/login?logout" class="btn-logout">LOGOUT_SESSION</a>
+        </div>
     </div>
 
     <table>
@@ -205,9 +240,9 @@
         <tr>
             <th>Title</th>
             <th>Author</th>
-            <th>Price (BTC)</th>
+            <th>Price (AZN)</th>
             <th>Amount</th>
-            <th>Actions</th>
+            <th th:if="${isAdmin}">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -216,7 +251,7 @@
             <td th:text="${book.author}"></td>
             <td th:text="${book.price}" style="color: #00d4ff;"></td>
             <td th:text="${book.amount}"></td>
-            <td>
+            <td th:if="${isAdmin}">
                 <a th:href="@{/books/edit/{id}(id=${book.id})}" style="color: #00d4ff; text-decoration: none;">EDIT</a>
                 <a class="btn-delete" th:href="@{/books/delete/{id}(id=${book.id})}"
                    onclick="return confirm('ERASE DATA?')">X</a>
