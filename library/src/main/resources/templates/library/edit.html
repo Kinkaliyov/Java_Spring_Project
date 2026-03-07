@@ -188,41 +188,36 @@ select option {
 
 <div class="glass-panel">
     <div class="typewriter">
-        <h1 th:text="'> EDIT_RECORD_ID_' + ${book.id}"></h1>
+        <h1 th:text="#{page.edit_record} + ${book.id}"></h1>
     </div>
 
     <form th:action="@{/books}" th:object="${book}" method="post">
         <input type="hidden" th:field="*{id}"/>
 
         <div class="input-group">
-            <label>Protocol Title</label>
-            <input type="text" th:field="*{title}" placeholder="System name..."
+            <label th:text="#{label.protocol_title}">Protocol Title</label>
+            <input type="text" th:field="*{title}" th:placeholder="#{placeholder.system_name}"
                    th:classappend="${#fields.hasErrors('title')} ? 'error-field'"/>
             <span class="error-message" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></span>
         </div>
 
         <div class="input-group">
-            <label>Source Author</label>
-            <select th:field="*{authorId}"
-                    th:classappend="${#fields.hasErrors('authorId')} ? 'error-field'">
-                <option value="" disabled selected>-- SELECT IDENTIFIER --</option>
-                <option th:each="author : ${authors}"
-                        th:value="${author.id}"
-                        th:text="${author.name}">
-                </option>
+            <label th:text="#{label.source_author}">Source Author</label>
+            <select th:field="*{authorId}" th:classappend="${#fields.hasErrors('authorId')} ? 'error-field'">
+                <option value="" disabled selected th:text="#{placeholder.select_id}">-- SELECT IDENTIFIER --</option>
+                <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name}"></option>
             </select>
             <span class="error-message" th:if="${#fields.hasErrors('authorId')}" th:errors="*{authorId}"></span>
         </div>
 
         <div style="display: flex; gap: 15px;">
             <div class="input-group" style="flex: 1;">
-                <label>Value (Credits)</label>
+                <label th:text="#{label.value_credits}">Value (Credits)</label>
                 <input type="number" step="0.01" th:field="*{price}"
                        th:classappend="${#fields.hasErrors('price')} ? 'error-field'"/>
             </div>
-
             <div class="input-group" style="flex: 1;">
-                <label>Stock Quantity</label>
+                <label th:text="#{label.stock_quantity}">Stock Quantity</label>
                 <input type="number" th:field="*{amount}"
                        th:classappend="${#fields.hasErrors('amount')} ? 'error-field'"/>
             </div>
@@ -233,10 +228,9 @@ select option {
             <span class="error-message" th:if="${#fields.hasErrors('amount')}" th:errors="*{amount}"></span>
         </div>
 
-        <button type="submit" class="btn-update">Commit Changes_</button>
-        <a th:href="@{/books}" class="back-link">[ CANCEL_AND_EXIT ]</a>
+        <button type="submit" class="btn-update" th:text="#{btn.commit}">Commit Changes_</button>
+        <a th:href="@{/books}" class="back-link" th:text="#{nav.cancel}">[ CANCEL_AND_EXIT ]</a>
     </form>
 </div>
-
 </body>
 </html>

@@ -214,62 +214,56 @@
 </head>
 <body>
 
+<div style="display: flex; gap: 15px; margin-bottom: 20px; font-size: 12px; font-family: monospace;">
+    <a th:href="@{/books(lang='en')}" style="color: #00d4ff; text-decoration: none;">[ EN ]</a>
+    <a th:href="@{/books(lang='ru')}" style="color: #00d4ff; text-decoration: none;">[ RU ]</a>
+    <a th:href="@{/books(lang='az')}" style="color: #00d4ff; text-decoration: none;">[ AZ ]</a>
+</div>
+
 <div class="glass-panel">
     <div class="typewriter">
-        <h2>> ACCESSING_LIBRARY_DATABASE...</h2>
+        <h2 th:text="#{nav.accessing}">> ACCESSING_LIBRARY_DATABASE...</h2>
     </div>
 
     <div class="top-controls">
         <div>
-            <a th:href="@{/books/new}" th:if="${isAdmin}" class="add-btn">+ ADD_NEW_RECORD</a>
+            <a th:href="@{/books/new}" th:if="${isAdmin}" class="add-btn" th:text="#{btn.add_new}">+ ADD_NEW_RECORD</a>
         </div>
 
         <div style="display: flex; gap: 10px; align-items: center;">
             <form th:action="@{/books}" method="get" style="display: flex; gap: 10px;">
-                <input type="text" name="keyword" placeholder="Search title..." th:value="${keyword}">
-                <button type="submit">SEARCH</button>
-                <a th:href="@{/books}" th:if="${keyword != null}" style="color: #555; text-decoration: none; align-self: center; margin: 0 10px;">[RESET]</a>
+                <input type="text" name="keyword" th:placeholder="#{placeholder.search}" th:value="${keyword}">
+                <button type="submit" th:text="#{btn.search}">SEARCH</button>
+                <a th:href="@{/books}" th:if="${keyword != null}" style="color: #555; text-decoration: none; align-self: center; margin: 0 10px;" th:text="#{nav.reset}">[RESET]</a>
             </form>
-
-            <a href="http://localhost:1504/login?logout" class="btn-logout">LOGOUT_SESSION</a>
+            <a href="http://localhost:1504/login?logout" class="btn-logout" th:text="#{nav.logout}">LOGOUT_SESSION</a>
         </div>
     </div>
 
     <table>
         <thead>
         <tr>
-            <th>Title</th>
-            <th>Author</th>
-            <th>Book_Author</th>
-            <th>Price (AZN)</th>
-            <th>Amount</th>
-            <th th:if="${isAdmin}">Actions</th>
+            <th th:text="#{table.header.title}">Title</th>
+            <th th:text="#{table.header.author}">Book_Author</th>
+            <th th:text="#{table.header.price}">Price (AZN)</th>
+            <th th:text="#{table.header.amount}">Amount</th>
+            <th th:if="${isAdmin}" th:text="#{table.header.actions}">Actions</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="book : ${books}">
             <td th:text="${book.title}" style="color: #fff; font-weight: 500;"></td>
-            <td th:text="${book.author != null ? book.author.name : 'Anon_Auth'}"></td>
+            <td th:text="${book.author != null ? book.author.name : #messages.msg('table.empty_auth')}"></td>
             <td th:text="${book.price}" style="color: #00d4ff;"></td>
             <td th:text="${book.amount}"></td>
             <td th:if="${isAdmin}">
-                <a th:href="@{/books/edit/{id}(id=${book.id})}" style="color: #00d4ff; text-decoration: none;">EDIT</a>
+                <a th:href="@{/books/edit/{id}(id=${book.id})}" style="color: #00d4ff; text-decoration: none;" th:text="#{btn.edit}">EDIT</a>
                 <a class="btn-delete" th:href="@{/books/delete/{id}(id=${book.id})}"
-                   onclick="return confirm('ERASE DATA?')">X</a>
+                   th:onclick="return confirm([[#{confirm.erase}]])">X</a>
             </td>
         </tr>
         </tbody>
     </table>
-
-    <div class="pagination">
-        <a th:if="${currentPage > 0}" th:href="@{/books(page=${currentPage - 1}, size=${size}, keyword=${keyword})}">PREV</a>
-        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
-            <a th:href="@{/books(page=${i}, size=${size}, keyword=${keyword})}"
-               th:text="${i + 1}"
-               th:class="${i == currentPage} ? 'active-page' : ''"></a>
-        </span>
-        <a th:if="${currentPage + 1 < totalPages}" th:href="@{/books(page=${currentPage + 1}, size=${size}, keyword=${keyword})}">NEXT</a>
-    </div>
 </div>
 
 </body>
