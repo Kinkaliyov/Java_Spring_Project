@@ -14,16 +14,19 @@ public class Book {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
-    private String author;
+//    private Author author;
     private Double price;
     private Integer amount;
 
+    @ManyToOne
+    @JoinColumn(name = "author_id")
+    private Author bookAuthor;
 
     public Book() {
 
     }
 
-    public Book(String title, String author, Double price, Integer amount) {
+    public Book(String title, Author author, Double price, Integer amount) {
         this.title = title;
         this.author = author;
         this.price = price;
@@ -50,7 +53,7 @@ public class Book {
         return author;
     }
 
-    public void setAuthor(String author) {
+    public void setAuthor(Author author) {
         this.author = author;
     }
 
@@ -68,5 +71,13 @@ public class Book {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Author getBookAuthor() {
+        return bookAuthor;
+    }
+
+    public void setBookAuthor(Author bookAuthor) {
+        this.bookAuthor = bookAuthor;
     }
 }

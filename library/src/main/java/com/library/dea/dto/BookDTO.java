@@ -1,5 +1,6 @@
 package com.library.dea.dto;
 
+import com.library.dea.entity.Author;
 import com.library.dea.validation.ValidPrice;
 import jakarta.validation.constraints.*;
 
@@ -26,6 +27,9 @@ public class BookDTO {
     @Max(value = 1000, message = "Amount must be less than 1000")
     private Integer amount;
 
+    private Long bookAuthor;
+
+    private String authorName;
 
     public BookDTO() {
 
@@ -70,5 +74,13 @@ public class BookDTO {
 
     public void setAmount(Integer amount) {
         this.amount = amount;
+    }
+
+    public Author getBookAuthor() {
+        return bookAuthor;
+    }
+
+    public void setBookAuthor(Author bookAuthor) {
+        this.bookAuthor = bookAuthor;
     }
 }

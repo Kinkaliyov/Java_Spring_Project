@@ -1,16 +1,16 @@
 package com.library.dea.service;
 
 import com.library.dea.dto.BookDTO;
+import com.library.dea.entity.Author;
 import com.library.dea.entity.Book;
 import com.library.dea.mapper.BookMapper;
+import com.library.dea.repository.AuthorRepository;
 import com.library.dea.repository.BookRepository;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 import java.util.List;
 
@@ -18,9 +18,11 @@ import java.util.List;
 public class BookService {
 
     private final BookRepository bookRepository;
+    private final AuthorRepository authorRepository;
 
-    public BookService(BookRepository bookRepository) {
+    public BookService(BookRepository bookRepository, AuthorRepository authorRepository) {
         this.bookRepository = bookRepository;
+        this.authorRepository = authorRepository;
     }
 
     // create method (POST)
@@ -58,10 +60,18 @@ public class BookService {
         return bookRepository.findByMinAmount(minAmount);
     }
 
+    public List<Author>  getAllAuthors(){
+        return authorRepository.findAll();
+    }
+
     // show book by id (GET)
     public Book showById(Integer id) {
         return bookRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("There is no such a Book with the following ID! " + id));
+    }
+
+    public Author findAuthorById(Long id) {
+        return authorRepository.findById(id).orElseThrow( () -> new RuntimeException("Author not found!"));
     }
 
     public Book update(Integer id, BookDTO updatedBook) {
@@ -70,6 +80,7 @@ public class BookService {
                     existing.setAuthor(updatedBook.getAuthor());
                     existing.setPrice(updatedBook.getPrice());
                     existing.setAmount(updatedBook.getAmount());
+                    existing.setBookAuthor(updatedBook.getBookAuthor());
                     return bookRepository.save(existing);
 
     }

@@ -240,6 +240,7 @@
         <tr>
             <th>Title</th>
             <th>Author</th>
+            <th>Book_Author</th>
             <th>Price (AZN)</th>
             <th>Amount</th>
             <th th:if="${isAdmin}">Actions</th>
@@ -249,6 +250,7 @@
         <tr th:each="book : ${books}">
             <td th:text="${book.title}" style="color: #fff; font-weight: 500;"></td>
             <td th:text="${book.author}"></td>
+            <td th:text="${book.author.name}"></td>
             <td th:text="${book.price}" style="color: #00d4ff;"></td>
             <td th:text="${book.amount}"></td>
             <td th:if="${isAdmin}">
