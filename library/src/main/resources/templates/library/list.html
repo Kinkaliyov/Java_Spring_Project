@@ -249,8 +249,7 @@
         <tbody>
         <tr th:each="book : ${books}">
             <td th:text="${book.title}" style="color: #fff; font-weight: 500;"></td>
-            <td th:text="${book.author}"></td>
-            <td th:text="${book.author.name}"></td>
+            <td th:text="${book.author != null ? book.author.name : 'Anon_Auth'}"></td>
             <td th:text="${book.price}" style="color: #00d4ff;"></td>
             <td th:text="${book.amount}"></td>
             <td th:if="${isAdmin}">

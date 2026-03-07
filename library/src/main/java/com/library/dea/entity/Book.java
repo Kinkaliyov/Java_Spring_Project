@@ -1,10 +1,6 @@
 package com.library.dea.entity;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.Getter;
-import lombok.Setter;
 
 @Entity
 @Table(name = "books")
@@ -20,15 +16,16 @@ public class Book {
 
     @ManyToOne
     @JoinColumn(name = "author_id")
-    private Author bookAuthor;
+    private Author author;
+
 
     public Book() {
 
     }
 
-    public Book(String title, Author author, Double price, Integer amount) {
+    public Book(String title, Double price, Integer amount) {
         this.title = title;
-        this.author = author;
+
         this.price = price;
         this.amount = amount;
     }
@@ -49,14 +46,6 @@ public class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(Author author) {
-        this.author = author;
-    }
-
     public Double getPrice() {
         return price;
     }
@@ -73,11 +62,11 @@ public class Book {
         this.amount = amount;
     }
 
-    public Author getBookAuthor() {
-        return bookAuthor;
+    public Author getAuthor() {
+        return author;
     }
 
-    public void setBookAuthor(Author bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setAuthor(Author author) {
+        this.author = author;
     }
 }

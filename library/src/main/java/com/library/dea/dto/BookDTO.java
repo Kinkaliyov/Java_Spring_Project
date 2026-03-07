@@ -8,26 +8,26 @@ public class BookDTO {
 
     private Integer id;
 
-    @NotBlank(message = "Title is required")
-    @Size(min = 4, max = 100, message = "Title must be between 4 and 100 characters")
+    @NotBlank(message = "Title обязательно!!")
+    @Size(min = 2, max = 100, message = "Title must be 2-100 characters")
     private String title;
 
-    @NotBlank(message = "Author is required")
-    @Size(min = 4, max = 40, message = "Author must be between 4 and 40 characters")
-    private String author;
+//    @NotBlank(message = "Author обязательно!!")
+//    @Size(min = 4, max = 100, message = "Author must be 4-100 characters")
+//    private String author;
 
-    @NotNull(message = "Price is required")
-//    @DecimalMin(value = "0.01", message = "Price must be greater than 0")
-//    @Digits(integer = 10, fraction = 2, message = "Price must have 2 decimal places")
+    @NotNull(message = "Price обязательно!!")
+//    @DecimalMin(value="0.01", message = "Price must be at least 0.01")
+//    @Digits(integer = 10, fraction = 2, message = "Price format: up to 10 digits and 2 decimals") // 10.2
     @ValidPrice
     private Double price;
 
-    @NotNull(message = "Amount is required")
-    @Min(value = 1, message = "Amount must be greater than 0")
-    @Max(value = 1000, message = "Amount must be less than 1000")
+    @NotNull(message = "Amount обязательно!!")
+    @Min(value=1, message = " Min amount must be at least 1")
+    @Max(value=1000, message = "Max amount must be not more than 1000")
     private Integer amount;
 
-    private Long bookAuthor;
+    private Long authorId;
 
     private String authorName;
 
@@ -35,37 +35,12 @@ public class BookDTO {
 
     }
 
-
     public Integer getId() {
         return id;
     }
 
     public void setId(Integer id) {
         this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public Double getPrice() {
-        return price;
-    }
-
-    public void setPrice(Double price) {
-        this.price = price;
     }
 
     public Integer getAmount() {
@@ -76,11 +51,43 @@ public class BookDTO {
         this.amount = amount;
     }
 
-    public Author getBookAuthor() {
-        return bookAuthor;
+    public Double getPrice() {
+        return price;
     }
 
-    public void setBookAuthor(Author bookAuthor) {
-        this.bookAuthor = bookAuthor;
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+//    public String getAuthor() {
+//        return author;
+//    }
+//
+//    public void setAuthor(String author) {
+//        this.author = author;
+//    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
+    }
+
+    public void setAuthorId(Long authorId) {
+        this.authorId = authorId;
+    }
+
+    public String getAuthorName() {
+        return authorName;
+    }
+
+    public void setAuthorName(String authorName) {
+        this.authorName = authorName;
     }
 }

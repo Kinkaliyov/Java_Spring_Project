@@ -60,7 +60,7 @@ public class BookService {
         return bookRepository.findByMinAmount(minAmount);
     }
 
-    public List<Author>  getAllAuthors(){
+    public List<Author> getAllAuthors() {
         return authorRepository.findAll();
     }
 
@@ -71,18 +71,19 @@ public class BookService {
     }
 
     public Author findAuthorById(Long id) {
-        return authorRepository.findById(id).orElseThrow( () -> new RuntimeException("Author not found!"));
+        return authorRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Author not found!"));
     }
 
     public Book update(Integer id, BookDTO updatedBook) {
-        Book existing = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("Book not found with such an id! " + id));
-                    existing.setTitle(updatedBook.getTitle());
-                    existing.setAuthor(updatedBook.getAuthor());
-                    existing.setPrice(updatedBook.getPrice());
-                    existing.setAmount(updatedBook.getAmount());
-                    existing.setBookAuthor(updatedBook.getBookAuthor());
-                    return bookRepository.save(existing);
+        Book existing = bookRepository.findById(id).orElseThrow(() -> new RuntimeException("No book with following id!"));
 
+                   existing.setTitle(updatedBook.getTitle());
+//                   existing.setAuthor(updatedBook.getAuthor());
+                   existing.setPrice(updatedBook.getPrice());
+                   existing.setAmount(updatedBook.getAmount());
+//                   existing.setBookAuthor(updatedBook.getBookAuthor());
+                   return bookRepository.save(existing);
     }
 
     // delete book (DELETE)
@@ -90,9 +91,9 @@ public class BookService {
         bookRepository.deleteById(id);
     }
 
-    // pagination
+//    Pagination
     public Page<Book> findPaginated(int page, int size) {
-        Pageable pageable  = PageRequest.of(page, size, Sort.by("id").ascending());
+        Pageable pageable = PageRequest.of(page, size, Sort.by("id").ascending());
         return bookRepository.findAll(pageable);
     }
 
@@ -102,22 +103,16 @@ public class BookService {
         return bookRepository.findByTitleContainingIgnoreCase(keyword, pageable);
     }
 
-    public void saveDTO (BookDTO bookDTO){
-        Book book = BookMapper.toEntity(bookDTO);
-        bookRepository.save(book);
+    public void saveDto(BookDTO bookDTO) {
+        Book entity = BookMapper.toEntity(bookDTO);
 
+        Author author = authorRepository
+                .findById(bookDTO.getAuthorId())
+                .orElseThrow(() -> new RuntimeException("Author Not Found"));
+        entity.setAuthor(author); //INSERT INTO books
+
+        bookRepository.save(entity);
     }
 
-    public Double getTotalValueByAuthor(String author) {
-        List<Book> books = bookRepository.findByAuthor(author);
-        double totalValue = 0;
 
-        for (Book book : books) {
-            if (book.getPrice() != null && book.getAmount() != null) {
-                totalValue += book.getPrice() * book.getAmount();
-            }
-        }
-
-        return totalValue; // Просто отдаем число!
-    }
 }
