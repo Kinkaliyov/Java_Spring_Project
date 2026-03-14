@@ -3,6 +3,7 @@ package com.library.dea.service.impl;
 import com.library.dea.dto.BookDTO;
 import com.library.dea.entity.Author;
 import com.library.dea.entity.Book;
+import com.library.dea.exception.BookNotFoundException;
 import com.library.dea.mapper.BookMapper;
 import com.library.dea.repository.AuthorRepository;
 import com.library.dea.repository.BookRepository;
@@ -66,7 +67,7 @@ public class BookServiceimpl implements BookService {
     @Override
     public Book showById(Integer id) {
         return bookRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Book not found! ID: " + id));
+                .orElseThrow(() -> new BookNotFoundException("Book not found! ID: " + id));
     }
 
     @Override

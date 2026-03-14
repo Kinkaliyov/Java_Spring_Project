@@ -2,6 +2,8 @@ package com.library.dea.service.impl;
 
 import com.library.dea.dto.RegisterForm;
 import com.library.dea.entity.User;
+import com.library.dea.exception.PasswordsDoNotMatchException;
+import com.library.dea.exception.UserAlreadyExistsException;
 import com.library.dea.repository.UserRepository;
 import com.library.dea.service.UserService;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -23,11 +25,11 @@ public class UserServiceimpl implements UserService {
     @Transactional
     public void register(RegisterForm form) {
         if (!form.getPassword().equals(form.getConfrimPassword())) {
-            throw new RuntimeException("Passwords do not match");
+            throw new PasswordsDoNotMatchException("Passwords do not match");
         }
 
         if (userRepository.existsByUsername(form.getUsername())) {
-            throw new RuntimeException("Username already exists");
+            throw new UserAlreadyExistsException("Username already exists");
         }
 
         User user = new User();
