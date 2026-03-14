@@ -26,7 +26,7 @@ public class AuthController {
 
     @GetMapping("/access-denied")
     public String denied() {
-        return "error/403"; // А не "error/access-denied", потому что файла с таким именем больше нет!
+        return "error/403";
     }
 
     @GetMapping("/register")

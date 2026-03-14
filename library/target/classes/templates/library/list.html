@@ -264,6 +264,20 @@
         </tr>
         </tbody>
     </table>
+
+    <div class="pagination" th:if="${totalPages > 1}">
+        <a th:href="@{/books(page=${currentPage - 1}, keyword=${keyword})}"
+           th:if="${currentPage > 0}">«</a>
+
+        <span th:each="i : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/books(page=${i}, keyword=${keyword})}"
+               th:text="${i + 1}"
+               th:classappend="${i == currentPage} ? 'active-page'"></a>
+        </span>
+
+        <a th:href="@{/books(page=${currentPage + 1}, keyword=${keyword})}"
+           th:if="${currentPage < totalPages - 1}">»</a>
+    </div>
 </div>
 
 </body>
