@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Author Protocol: Initialize</title>
+    <style>
+        /* --- БАЗА И ФИОЛЕТОВЫЙ ФОН --- */
+        body {
+            background: #08050a;
+            color: #e0e0e0;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* Неоновые сферы в фиолетовых тонах */
+        body::before, body::after {
+            content: "";
+            position: fixed;
+            width: 600px;
+            height: 600px;
+            border-radius: 50%;
+            background: rgba(187, 134, 252, 0.1);
+            filter: blur(120px);
+            z-index: -1;
+            animation: float 20s infinite alternate ease-in-out;
+        }
+        body::after {
+            background: rgba(123, 31, 162, 0.06);
+            right: -10%;
+            top: -10%;
+            animation-duration: 25s;
+            animation-delay: -5s;
+        }
+
+        @keyframes float {
+            0% { transform: translate(-10%, -10%) scale(1); }
+            100% { transform: translate(20%, 20%) scale(1.1); }
+        }
+
+        /* --- ЭФФЕКТ ПЕЧАТНОЙ МАШИНКИ --- */
+        .typewriter h2 {
+            color: #bb86fc;
+            font-family: monospace;
+            overflow: hidden;
+            border-right: .15em solid #bb86fc;
+            white-space: nowrap;
+            margin: 0 auto 30px auto;
+            letter-spacing: .15em;
+            animation: typing 2s steps(20, end), blink-caret .5s step-end infinite;
+            width: fit-content;
+            text-transform: uppercase;
+            font-size: 20px;
+        }
+
+        @keyframes typing { from { width: 0 } to { width: 100% } }
+        @keyframes blink-caret { from, to { border-color: transparent } 50% { border-color: #bb86fc } }
+
+        /* --- GLASS PANEL --- */
+        .glass-panel {
+            background: rgba(20, 10, 30, 0.4);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
+            border: 1px solid rgba(187, 134, 252, 0.2);
+            border-radius: 20px;
+            padding: 40px;
+            width: 100%;
+            max-width: 450px;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9), inset 0 0 20px rgba(187, 134, 252, 0.05);
+            text-align: center;
+            animation: panelSlide 0.6s ease-out;
+        }
+
+        @keyframes panelSlide {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- INPUTS --- */
+        .input-group {
+            margin-bottom: 25px;
+            text-align: left;
+        }
+
+        label {
+            display: block;
+            font-size: 11px;
+            color: #bb86fc;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            font-weight: 800;
+            opacity: 0.8;
+        }
+
+        input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(187, 134, 252, 0.2);
+            border-radius: 8px;
+            padding: 14px 18px;
+            color: #fff;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+            box-sizing: border-box;
+        }
+
+        input:focus {
+            border-color: #bb86fc;
+            background: rgba(187, 134, 252, 0.08);
+            box-shadow: 0 0 20px rgba(187, 134, 252, 0.2);
+        }
+
+        .error-message { color: #cf6679; font-size: 10px; margin-top: 6px; text-transform: uppercase; }
+
+        /* --- BUTTONS --- */
+        .btn-submit {
+            width: 100%;
+            background: #bb86fc;
+            border: none;
+            padding: 16px;
+            border-radius: 8px;
+            color: #000;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            cursor: pointer;
+            transition: 0.4s;
+            margin-top: 10px;
+        }
+
+        .btn-submit:hover {
+            box-shadow: 0 0 35px rgba(187, 134, 252, 0.6);
+            transform: translateY(-2px);
+            background: #d1aaff;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 25px;
+            color: #666;
+            text-decoration: none;
+            font-size: 11px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .back-link:hover { color: #bb86fc; }
+    </style>
+</head>
+<body>
+
+<div class="glass-panel">
+    <div class="typewriter">
+        <h2>> AUTHOR_SYNC_PROTOCOL</h2>
+    </div>
+
+    <form th:action="@{/authors/save}" th:object="${authorDTO}" method="post">
+
+        <div class="input-group">
+            <label>Identification Name</label>
+            <input type="text" th:field="*{name}" placeholder="Input subject name..." required />
+            <span class="error-message" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></span>
+        </div>
+
+        <button type="submit" class="btn-submit">REGISTER_DATA_</button>
+        <a th:href="@{/authors}" class="back-link">[ ABORT_AND_EXIT ]</a>
+    </form>
+</div>
+
+</body>
+</html>

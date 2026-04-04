@@ -30,4 +30,11 @@ public class GlobalExceptionHandler {
         model.addAttribute("message", ex.getMessage());
         return "error/user_exists";
     }
+
+    @ExceptionHandler(AuthorAlreadyExistsException.class)
+    public String handleAuthorAlreadyExists(AuthorAlreadyExistsException ex, Model model) {
+        model.addAttribute("message", ex.getMessage());
+        return "error/author_not_found";
+    }
+
 }
